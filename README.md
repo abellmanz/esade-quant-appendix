@@ -94,12 +94,14 @@ Everything listed above is **required** for the notebook to run with default set
 
 | Flag | Default | Meaning |
 |------|---------|---------|
-| `DATA_SOURCE` | `"bundled"` | Use included parquet data (fast) |
+| `DATA_SOURCE` | `"bundled"` | Use included parquet data (fast). Set to `"download"` to fetch fresh OHLCV/funding from Binance (2+ hours). |
 | `RUN_SELECTION_SWEEP` | `False` | Use cached cadence leaderboard |
-| `RETRAIN_PRODUCTION_MODEL` | `False` | Use frozen CatBoost model |
-| `FORCE_REBUILD_PANEL` | `False` | Reuse pre-built panels |
+| `RETRAIN_PRODUCTION_MODEL` | `False` | Use frozen CatBoost model. Set to `True` to refit on the current train split. |
+| `FORCE_REBUILD_PANEL` | `False` | Reuse pre-built `panel.parquet`. Set to `True` to rebuild features from raw data. |
 
 No changes are needed for a standard review run.
+
+**From-scratch reproduction:** `DATA_SOURCE = "download"` alone does **not** feed fresh data into the model — the notebook reuses the existing `panel.parquet` unless `FORCE_REBUILD_PANEL = True`. For a full end-to-end rebuild from raw downloads, set all three: `DATA_SOURCE = "download"`, `FORCE_REBUILD_PANEL = True`, and `RETRAIN_PRODUCTION_MODEL = True`.
 
 ---
 
