@@ -1,0 +1,140 @@
+{
+  "profile": "wide20_8h_dual",
+  "mode": "8h_decide_1h_exec",
+  "experiment": "8h_fwd5d",
+  "canonical_summary": "production_summary.csv",
+  "leakage_controls": {
+    "model_fit_split": "train_only",
+    "model_features_panel": "8h",
+    "decisions_and_rebalance": "8h_every_15_bars",
+    "pnl_simulation": "1h_hourly_returns",
+    "execution_lag": "1h_one_bar",
+    "validation_used_for": "horizon_selection_only_not_sleeve_weights",
+    "selection_family": "8h_horizons_only",
+    "test_evaluated_once": true,
+    "do_not_add_val_test_to_train": true
+  },
+  "selection": {
+    "protocol": "pre-registered, validation-only",
+    "selectable_family": "8h cadence horizons fwd1d..fwd7d (only candidates)",
+    "criterion": "validation Sharpe-to-maxDrawdown (validation_sleeve_sharpe / |validation_max_dd|)",
+    "chosen_tag": "8h_fwd5d",
+    "cross_timeframe_note": "12h/1d candidates removed from selection; production profile is 8h-cadence.",
+    "evaluator_note": "holdout_test_evaluation.csv reports the 8h-bar selection simulator (used only to rank horizons); the canonical test headline (Sharpe ~1.70) is the 8h_decide_1h_exec hybrid in production_summary.csv \u2014 same spec, different evaluator.",
+    "ranked_candidates": [
+      {
+        "tag": "8h_fwd5d",
+        "rank": 1,
+        "validation_sharpe": 0.954,
+        "validation_max_dd": -0.077,
+        "validation_sharpe_dd": 12.387
+      },
+      {
+        "tag": "8h_fwd3d",
+        "rank": 2,
+        "validation_sharpe": 1.045,
+        "validation_max_dd": -0.0945,
+        "validation_sharpe_dd": 11.057
+      },
+      {
+        "tag": "8h_fwd2d",
+        "rank": 3,
+        "validation_sharpe": 0.819,
+        "validation_max_dd": -0.0996,
+        "validation_sharpe_dd": 8.224
+      },
+      {
+        "tag": "8h_fwd4d",
+        "rank": 4,
+        "validation_sharpe": 0.627,
+        "validation_max_dd": -0.0957,
+        "validation_sharpe_dd": 6.551
+      },
+      {
+        "tag": "8h_fwd6d",
+        "rank": 5,
+        "validation_sharpe": 0.633,
+        "validation_max_dd": -0.1139,
+        "validation_sharpe_dd": 5.559
+      },
+      {
+        "tag": "8h_fwd1d",
+        "rank": 6,
+        "validation_sharpe": 0.348,
+        "validation_max_dd": -0.1148,
+        "validation_sharpe_dd": 3.032
+      },
+      {
+        "tag": "8h_fwd7d",
+        "rank": 7,
+        "validation_sharpe": -0.001,
+        "validation_max_dd": -0.0889,
+        "validation_sharpe_dd": -0.013
+      }
+    ]
+  },
+  "sleeve_weights": {
+    "ml": 0.35,
+    "carry": 0.65
+  },
+  "catboost_info": null,
+  "splits": [
+    {
+      "profile": "wide20_8h_dual",
+      "mode": "8h_decide_1h_exec",
+      "cadence_tag": "8h_fwd5d",
+      "model": "catboost_reg",
+      "split": "validation",
+      "w_ml": 0.35,
+      "w_carry": 0.65,
+      "ml_sharpe": 0.7129996344353533,
+      "carry_sharpe": 0.8322421208707133,
+      "sleeve_sharpe": 0.941805560072766,
+      "sleeve_max_dd_log": -0.0778208772267423,
+      "sleeve_total_log": 0.10513922137953643,
+      "sleeve_hit_rate": 0.5072547881601858,
+      "sleeve_calmar": 1.3510413288351686,
+      "n_bars": 8615,
+      "n_symbols": 20,
+      "sleeve_net_sharpe": 0.941805560072766,
+      "sleeve_net_max_dd_log": -0.0778208772267423,
+      "pnl_grid": "1h",
+      "decision_grid": "8h",
+      "execution_lag": "1h (1 bar)",
+      "rebalance_grid": "8h (every 15 bars = 5d)"
+    },
+    {
+      "profile": "wide20_8h_dual",
+      "mode": "8h_decide_1h_exec",
+      "cadence_tag": "8h_fwd5d",
+      "model": "catboost_reg",
+      "split": "test",
+      "w_ml": 0.35,
+      "w_carry": 0.65,
+      "ml_sharpe": 1.114048500211769,
+      "carry_sharpe": 1.6208238859578554,
+      "sleeve_sharpe": 1.6950352239257303,
+      "sleeve_max_dd_log": -0.07754875682083866,
+      "sleeve_total_log": 0.2701507461386723,
+      "sleeve_hit_rate": 0.5129163551790016,
+      "sleeve_calmar": 3.483624460451418,
+      "n_bars": 12039,
+      "n_symbols": 20,
+      "sleeve_net_sharpe": 1.6950352239257303,
+      "sleeve_net_max_dd_log": -0.07754875682083866,
+      "pnl_grid": "1h",
+      "decision_grid": "8h",
+      "execution_lag": "1h (1 bar)",
+      "rebalance_grid": "8h (every 15 bars = 5d)",
+      "bootstrap": {
+        "n_iterations": 2000,
+        "block_size_bars": 720,
+        "sharpe_median": 1.7997805057378917,
+        "sharpe_ci_95_low": 0.7554478929694535,
+        "sharpe_ci_95_high": 3.02209625032856,
+        "p_sharpe_gt_1": 0.938,
+        "p_sharpe_gt_0": 0.997
+      }
+    }
+  ]
+}

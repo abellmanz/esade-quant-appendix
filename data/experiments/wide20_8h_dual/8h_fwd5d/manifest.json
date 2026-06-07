@@ -1,0 +1,10 @@
+{
+  "tag": "8h_fwd5d",
+  "interval": "8h",
+  "target_days": 5,
+  "rebalance_days": 5,
+  "horizon_bars": 15,
+  "rebalance_every_bars": 15,
+  "n_rows": 112540,
+  "n_timestamps": 5627
+}

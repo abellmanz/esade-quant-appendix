@@ -1,0 +1,30 @@
+# Virtual environments
+.venv/
+.venv_*/
+venv/
+env/
+
+# Python build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# CatBoost training temp files
+catboost_info/
+
+# Local audit/backup copies (duplicate of bundled data)
+.audit_backup/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/

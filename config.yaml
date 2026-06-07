@@ -1,0 +1,157 @@
+# binance_8h_dual_standalone — frozen wide20_8h_dual production profile
+
+active_profile: wide20_8h_dual
+
+# Canonical production: 8h train/decide, 1h execution panel (data/experiments/.../1h_exec/)
+production:
+  execution_mode: 8h_decide_1h_exec
+
+panel:
+  require_common_history: true
+
+profiles:
+  wide20_8h_dual:
+    symbols:
+      - BTCUSDT
+      - ETHUSDT
+      - ZECUSDT
+      - SOLUSDT
+      - NEARUSDT
+      - XRPUSDT
+      - DOGEUSDT
+      - BNBUSDT
+      - FILUSDT
+      - ADAUSDT
+      - LINKUSDT
+      - AVAXUSDT
+      - TRXUSDT
+      - DOTUSDT
+      - AAVEUSDT
+      - BCHUSDT
+      - UNIUSDT
+      - LTCUSDT
+      - ATOMUSDT
+      - DASHUSDT
+    n_long: 5
+    n_short: 5
+    cadence:
+      interval: 8h
+      target_days: 5
+      rebalance_days: 5
+    sleeve_weights:
+      ml: 0.35
+      carry: 0.65
+    catboost:
+      depth: 2
+      min_data_in_leaf: 150
+      iterations_grid: [100, 200]
+      learning_rate: 0.05
+
+  wide20_1h_dual:
+    symbols:
+      - BTCUSDT
+      - ETHUSDT
+      - ZECUSDT
+      - SOLUSDT
+      - NEARUSDT
+      - XRPUSDT
+      - DOGEUSDT
+      - BNBUSDT
+      - FILUSDT
+      - ADAUSDT
+      - LINKUSDT
+      - AVAXUSDT
+      - TRXUSDT
+      - DOTUSDT
+      - AAVEUSDT
+      - BCHUSDT
+      - UNIUSDT
+      - LTCUSDT
+      - ATOMUSDT
+      - DASHUSDT
+    n_long: 5
+    n_short: 5
+    cadence:
+      interval: 1h
+      target_days: 5
+      rebalance_days: 5
+    sleeve_weights:
+      ml: 0.35
+      carry: 0.65
+    catboost:
+      depth: 2
+      min_data_in_leaf: 150
+      iterations_grid: [100, 200]
+      learning_rate: 0.05
+
+ingest:
+  interval: 8h
+  intervals: ["8h", "1h"]
+  start: "2018-06-01"
+  end: "2026-05-23"
+  binance_spot_base: "https://api.binance.com"
+  binance_perp_base: "https://fapi.binance.com"
+
+features:
+  rv_lookback_bars: 30
+  trend_lookbacks: [4, 7, 30]
+  funding_rate_window_days: 7
+  three_ema_pair_days: [[8, 32], [16, 64], [32, 128]]
+  ffd_d: 0.4
+  ffd_thresh: 1e-4
+
+splits:
+  # NOTE: these are INGEST bounds. require_common_history trims the modelling panel
+  # to the first date all 20 symbols co-exist, so the EFFECTIVE train window is
+  # ~2021-03-29 -> 2023-12-25 (2018-2021 history is fetched but filtered out).
+  # See features/panel_filter.filter_common_history.
+  train_start: "2018-06-01"
+  train_end: "2024-01-01"
+  validation_start: "2024-01-01"
+  validation_end: "2025-01-01"
+  test_start: "2025-01-01"
+  test_end: "2026-05-23"
+  purge_days: 7
+
+ml:
+  learning_rate: 0.05
+  min_data_in_leaf: 100
+
+model:
+  alpha: 1000.0
+  features:
+    - three_ema_y2
+    - ffd_log_close
+    - mom_30d
+    - mom_7d
+    - mom_4h
+    - funding_rate_7d_median
+    - funding_rate_xs_rank
+    - rv_close_30d
+    - rv_garman_klass_30d
+    - signed_taker_imbalance
+
+cv:
+  n_splits: 5
+  purge_days: 7
+  embargo_pct: 0.01
+
+strategy:
+  n_long: 5
+  n_short: 5
+  rebalance_every_bars: 15
+  fee_bps_per_side: 8.0
+  slippage_bps_per_side: 2.0
+  target_vol_ann: 0.15
+  execution_lag_bars: 1
+  per_asset_weight_cap: 0.25
+  sleeve_weights:
+    ml: 0.35
+    carry: 0.65
+  funding_event_hours: 8.0
+
+reports:
+  bootstrap_block_days: 30
+  bootstrap_iterations: 2000
+
+random_seed: 42

@@ -1,0 +1,45 @@
+{
+  "model_type": "catboost",
+  "iterations": 200,
+  "depth": 2,
+  "learning_rate": 0.05,
+  "min_data_in_leaf": 150,
+  "cv_results": [
+    {
+      "iterations": 100,
+      "mean_rank_ic": 0.0036683786809475856
+    },
+    {
+      "iterations": 200,
+      "mean_rank_ic": 0.006102445029125422
+    }
+  ],
+  "mean_rank_ic": 0.006102445029125422,
+  "n_train": 60060,
+  "features": [
+    "three_ema_y2",
+    "ffd_log_close",
+    "mom_30d",
+    "mom_7d",
+    "mom_4h",
+    "funding_rate_7d_median",
+    "funding_rate_xs_rank",
+    "rv_close_30d",
+    "rv_garman_klass_30d",
+    "signed_taker_imbalance"
+  ],
+  "target": "fwd_logret_5d",
+  "feature_importance": {
+    "three_ema_y2": 7.005821585644797,
+    "ffd_log_close": 6.581522031649856,
+    "mom_30d": 8.890476324428981,
+    "mom_7d": 2.7513873678070264,
+    "mom_4h": 0.0,
+    "funding_rate_7d_median": 48.462235023837046,
+    "funding_rate_xs_rank": 3.714544221352598,
+    "rv_close_30d": 13.331044522021896,
+    "rv_garman_klass_30d": 9.192527151372957,
+    "signed_taker_imbalance": 0.07044177188485262
+  },
+  "random_seed": 42
+}

@@ -1,0 +1,2 @@
+tag,selected_on,evaluator,canonical_headline,test_ml_sharpe,test_carry_sharpe,test_sleeve_sharpe,test_max_dd,test_total_log
+8h_fwd5d,validation_sharpe_dd,8h_bar_selection_sim (ranking only),"see production_summary.csv (8h_decide_1h_exec hybrid, Sharpe~1.70)",0.7622873468006923,1.3854421077307697,1.3780339793801573,-0.0633451555879561,0.2191656593169298
